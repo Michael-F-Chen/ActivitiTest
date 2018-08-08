@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- Activiti的bean -->
+    <!--流程引擎配置 单独模式-->
+    <bean id="processEngineConfiguration" class="org.activiti.engine.impl.cfg.StandaloneProcessEngineConfiguration">
+        <!--<property name="jdbcUrl" value="jdbc:h2:mem:activiti"/>-->
+        <!--<property name="jdbcUrl" value="jdbc:h2:file:~/activiti-in-action-chapter7;AUTO_SERVER=TRUE"/>-->
+        <property name="jdbcUrl" value="jdbc:h2:file:~/activiti;AUTO_SERVER=TRUE"/>
+        <property name="jdbcDriver" value="org.h2.Driver"/>
+        <property name="jdbcUsername" value="ntc"/>
+        <property name="jdbcPassword" value=""/>
+
+        <property name="asyncExecutorActivate" value="true" />
+        <property name="databaseSchemaUpdate" value="true"/>
+    </bean>
+
+    <!-- 流程引擎的bean -->
+    <bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean">
+        <property name="processEngineConfiguration" ref="processEngineConfiguration" />
+    </bean>
+    <!-- 服务组件的bean -->
+    <bean id="repositoryService" factory-bean="processEngine"
+          factory-method="getRepositoryService" />
+    <bean id="runtimeService" factory-bean="processEngine"
+          factory-method="getRuntimeService" />
+    <bean id="taskService" factory-bean="processEngine"
+          factory-method="getTaskService" />
+    <bean id="historyService" factory-bean="processEngine"
+          factory-method="getHistoryService" />
+    <bean id="managementService" factory-bean="processEngine"
+          factory-method="getManagementService" />
+</beans>
