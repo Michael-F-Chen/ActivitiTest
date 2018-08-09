@@ -4,7 +4,10 @@ import com.ntc.Entity.ProcessVO;
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.identity.Group;
+import org.activiti.engine.identity.User;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.IdentityLink;
 import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -56,10 +59,27 @@ public class ProcessController {
             Integer days = (Integer)runtimeService.getVariable(pi.getId(), "days");
             String reason = (String)runtimeService.getVariable(pi.getId(), "reason");
             System.out.println(reason + "---" + days);
+
+            Task task = taskService.createTaskQuery().processInstanceId(pi.getId()).singleResult();
+            List<IdentityLink> identityLinks = taskService.getIdentityLinksForTask(task.getId());
+
+            List<String> leaders = new ArrayList<>();
+
+            for (IdentityLink ldLink : identityLinks) {
+                System.out.println(ldLink.getGroupId());
+                List<Group> groups = identityService.createGroupQuery().groupId(ldLink.getGroupId()).list();
+
+                    List<User> users = identityService.createUserQuery().memberOfGroup(ldLink.getGroupId()).list();
+                    for (User u : users) {
+                        leaders.add(u.getId());
+                    }
+            }
+
             ProcessVO v = new ProcessVO();
             v.setDays(days);
             v.setReason(reason);
             v.setDate(formatDate(pi.getStartTime()));
+            v.setLeaders(leaders.toString());
             result.add(v);
         }
         model.addAttribute("pis", result);

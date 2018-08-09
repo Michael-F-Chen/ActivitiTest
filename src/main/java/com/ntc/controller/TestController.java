@@ -14,7 +14,7 @@ public class TestController {
 
     @RequestMapping("/")
     public String ind2ex() {
-        return "test";
+        return "login";
     }
 
 }

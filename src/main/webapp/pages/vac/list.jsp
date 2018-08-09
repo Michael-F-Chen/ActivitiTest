@@ -29,6 +29,7 @@
                   <td width="10%"><strong>填写时间</strong></td>
                   <td width="15%"><strong>请假天数</strong></td>
                   <td width="15%"><strong>事由</strong></td>
+                  <td width="15%"><strong>待审批人</strong></td>
                 </tr>
               </thead>
               <tbody id="">
@@ -37,6 +38,7 @@
                   <td>${pi.date}</td>
                   <td>${pi.days}</td>
                   <td>${pi.reason}</td>
+                  <td>${pi.leaders}</td>
                 </tr>
                 </c:forEach>
               </tbody>

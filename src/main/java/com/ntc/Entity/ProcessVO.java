@@ -8,6 +8,8 @@ public class ProcessVO {
 
     private String date;
 
+    private String leaders;
+
     public Integer getDays() {
         return days;
     }
@@ -30,6 +32,14 @@ public class ProcessVO {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getLeaders() {
+        return leaders;
+    }
+
+    public void setLeaders(String leaders) {
+        this.leaders = leaders;
     }
 
 }
